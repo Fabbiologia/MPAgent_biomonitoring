@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapid Reef Assessment from Diver Video</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">
+                <i class="fas fa-water"></i> Rapid Reef Assessment from Diver Video
+            </span>
+            <span class="navbar-text">Gulf of California Marine Assessment PoC</span>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Main Content Area -->
+            <div class="col-lg-8">
+                <!-- Upload Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4><i class="fas fa-upload"></i> Video Upload</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="upload-zone" class="upload-zone">
+                            <div class="upload-content">
+                                <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                                <h5>Upload Diver Video</h5>
+                                <p class="text-muted">Drag and drop your video file here or click to browse</p>
+                                <p class="small">Supported formats: MP4, MOV, AVI, MKV (Max: 500MB)</p>
+                                <input type="file" id="video-input" class="d-none" accept=".mp4,.mov,.avi,.mkv">
+                                <button class="btn btn-primary" onclick="document.getElementById('video-input').click()">
+                                    <i class="fas fa-folder-open"></i> Browse Files
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Upload Progress -->
+                        <div id="upload-progress" class="mt-3" style="display: none;">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                     role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <p class="mt-2 mb-0" id="upload-status">Uploading...</p>
+                        </div>
+
+                        <!-- Video Thumbnail -->
+                        <div id="video-preview" class="mt-3" style="display: none;">
+                            <h6>Video Preview:</h6>
+                            <video id="video-thumbnail" controls width="400" class="img-thumbnail">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="mt-2">
+                                <p id="video-filename"></p>
+                                <div id="algal-bloom-alert" class="alert alert-warning" style="display: none;">
+                                    <i class="fas fa-exclamation-triangle"></i> 
+                                    <strong>Special Analysis Triggered:</strong> Algal bloom detection protocols activated for this video.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Console -->
+                <div class="card mb-4" id="analysis-card" style="display: none;">
+                    <div class="card-header">
+                        <h4><i class="fas fa-terminal"></i> Real-time Analysis Console</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="analysis-console" class="analysis-console">
+                            <div class="console-header">
+                                <span class="text-success">●</span> Gulf of California Marine Assessment System v2.1
+                            </div>
+                            <div id="console-output"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Report -->
+                <div class="card mb-4" id="report-card" style="display: none;">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4><i class="fas fa-file-alt"></i> Technical Assessment Report</h4>
+                        <button class="btn btn-outline-primary btn-sm" id="download-pdf">
+                            <i class="fas fa-download"></i> Download PDF
+                        </button>
+                    </div>
+                    <div class="card-body" id="report-content">
+                        <!-- Report content will be dynamically generated -->
+                    </div>
+                </div>
+
+                <!-- Upload History -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-history"></i> Previous Assessments</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="upload-history">
+                            <p class="text-muted">No previous uploads found.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chatbot Panel -->
+            <div class="col-lg-4">
+                <div class="card chatbot-panel">
+                    <div class="card-header">
+                        <h5><i class="fas fa-robot"></i> Ask the ReefBot 🤿</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Quick Prompts -->
+                        <div class="mb-3">
+                            <h6>Quick Questions:</h6>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-info btn-sm quick-prompt" 
+                                        data-prompt="What is the relationship between fish density and surface temperature?">
+                                    🌡️ Fish Density & Temperature
+                                </button>
+                                <button class="btn btn-outline-warning btn-sm quick-prompt" 
+                                        data-prompt="Is coral bleaching affecting fish health in this area?">
+                                    🪸 Coral Bleaching Impact
+                                </button>
+                                <button class="btn btn-outline-success btn-sm quick-prompt" 
+                                        data-prompt="Compare this site to Cabo Pulmo baseline data">
+                                    📊 Cabo Pulmo Comparison
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Chat Interface -->
+                        <div class="chat-container">
+                            <div id="chat-messages" class="chat-messages">
+                                <div class="bot-message">
+                                    <i class="fas fa-robot"></i>
+                                    <div class="message-content">
+                                        Welcome! I'm ReefBot, your marine ecology assistant. Upload a video to begin analysis, 
+                                        or ask me questions about Gulf of California ecosystems.
+                                    </div>
+                                    <div class="message-time">System</div>
+                                </div>
+                            </div>
+                            
+                            <div class="chat-input-container">
+                                <div class="input-group">
+                                    <input type="text" id="chat-input" class="form-control" 
+                                           placeholder="Ask about marine ecology..." disabled>
+                                    <button class="btn btn-primary" id="send-chat" disabled>
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Gulf of California Map -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-map-marked-alt"></i> Gulf of California</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="gulf-map-container">
+                                <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" class="gulf-map" id="gulf-map">
+                                    <!-- Simple map of Gulf of California -->
+                                    <path d="M100,50 L50,350 L250,350 L200,50 Z" fill="#e3f2fd" stroke="#2196f3" stroke-width="2"/>
+                                    <!-- Land masses -->
+                                    <path d="M100,50 L50,350 L0,350 L0,50 Z" fill="#dcedc8" stroke="#8bc34a" stroke-width="1"/>
+                                    <path d="M200,50 L250,350 L300,350 L300,50 Z" fill="#dcedc8" stroke="#8bc34a" stroke-width="1"/>
+                                    <!-- Map labels -->
+                                    <text x="25" y="200" font-size="12px" fill="#37474f" transform="rotate(-90, 25, 200)">Baja California Peninsula</text>
+                                    <text x="275" y="200" font-size="12px" fill="#37474f" transform="rotate(90, 275, 200)">Mexican Mainland</text>
+                                    <text x="150" y="200" font-size="14px" fill="#0d47a1" text-anchor="middle">Gulf of California</text>
+                                    <!-- Location markers group -->
+                                    <g id="location-markers"></g>
+                                    <!-- Current location pin -->
+                                    <circle id="location-pin" cx="150" cy="200" r="8" fill="#ff5722" />
+                                </svg>
+                                <div id="current-location" class="small mt-2 p-2 border rounded bg-light">
+                                    <span class="badge bg-secondary">No location selected</span>
+                                    <div class="small text-muted mt-1">Click on a map pin to select a location</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/console.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/report.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/history.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/report-regeneration.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pdf-export.js') }}"></script>
+</body>
+</html>

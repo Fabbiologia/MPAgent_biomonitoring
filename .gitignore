@@ -1,0 +1,31 @@
+# Python virtual environment
+env/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flask uploads and temp files
+uploads/*
+!uploads/.gitkeep
+static/reports/*
+!static/reports/.gitkeep
+static/plots/*
+!static/plots/.gitkeep
+
+# Log files
+*.log
+reef_assessment.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Generated files
+*.pdf
