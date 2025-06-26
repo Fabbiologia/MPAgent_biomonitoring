@@ -3,21 +3,26 @@ env/
 venv/
 __pycache__/
 *.py[cod]
-*$py.class
+*.so
+.Python
 
-# Flask uploads and temp files
+# Uploads and temporary files
 uploads/*
+files/
+tmp/
+*.log
+*.zip
+
+# Keep upload directory structure with .gitkeep
 !uploads/.gitkeep
+
+# Generated reports and plots
 static/reports/*
 !static/reports/.gitkeep
 static/plots/*
 !static/plots/.gitkeep
 
-# Log files
-*.log
-reef_assessment.log
-
-# IDE files
+# IDE specific files
 .vscode/
 .idea/
 *.swp
