@@ -1,4 +1,4 @@
-// Rapid Reef Assessment - Interactive Gulf of California Map
+// Rapid Reef Assessment - Interactive Gulf of California Map using Leaflet.js
 
 // Extend ReefAssessmentApp with map-related methods
 ReefAssessmentApp.prototype.initializeMap = function() {
@@ -38,11 +38,60 @@ ReefAssessmentApp.prototype.initializeMap = function() {
         }
     ];
     
-    // Initialize map markers
-    this.createMapMarkers();
+    // Initialize Leaflet map
+    this.initLeafletMap();
     
-    // Add event listeners to markers
-    this.addMapMarkerListeners();
+    // Add markers to the map
+    this.addLeafletMarkers();
+};
+
+ReefAssessmentApp.prototype.initLeafletMap = function() {
+    // Initialize the map centered on Gulf of California
+    this.map = L.map('interactive-map').setView([26.0, -111.0], 6);
+    
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18
+    }).addTo(this.map);
+    
+    // Store markers for later reference
+    this.markers = {};
+    
+    // Add Gulf of California water body styles
+    L.polygon([
+        [31.6, -114.8], // North
+        [31.0, -114.0], // Northeast
+        [20.5, -105.6], // Southeast
+        [22.8, -109.8]  // Southwest
+    ], {
+        color: '#2196f3',
+        fillColor: '#e3f2fd',
+        fillOpacity: 0.3,
+        weight: 2
+    }).addTo(this.map).bindPopup('Gulf of California');
+};
+
+ReefAssessmentApp.prototype.addLeafletMarkers = function() {
+    // Add markers for each location
+    this.gulfLocations.forEach(location => {
+        // Create marker with custom popup
+        const marker = L.marker([location.lat, location.lng])
+            .addTo(this.map)
+            .bindPopup(`<b>${location.name}</b><br>${location.description}`);
+            
+        // Store marker by location name
+        this.markers[location.name] = marker;
+        
+        // Add click handler
+        marker.on('click', () => {
+            // Update location info
+            this.updateLocationInfo(location);
+            
+            // Simulate assessment for this location
+            this.simulateLocationAssessment(location.name);
+        });
+    });
 };
 
 ReefAssessmentApp.prototype.createMapMarkers = function() {
@@ -237,6 +286,9 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         if (window.reefApp) {
             window.reefApp.initializeMap();
+            
+            // Log that map is initialized
+            console.log('Interactive Leaflet map initialized');
         }
     }, 500);
 });

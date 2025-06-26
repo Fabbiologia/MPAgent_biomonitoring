@@ -127,6 +127,59 @@ reef-assessment/
 └── uploads/            # Uploaded video storage
 ```
 
+## Deployment Options
+
+The application can be deployed in several ways depending on your needs:
+
+### 1. Docker Deployment
+
+A Dockerfile and docker-compose.yml are provided for easy containerization:
+
+```bash
+# Build and run with Docker Compose
+docker-compose up -d
+
+# Or manually build and run
+docker build -t gulf-assessment .
+docker run -p 5000:5000 -v ./uploads:/app/uploads gulf-assessment
+```
+
+The Docker deployment includes:
+- Python 3.9 environment with all dependencies
+- Volume mapping for uploads and reports persistence
+- Production-ready configuration
+
+### 2. Render.com Deployment
+
+For easy cloud deployment, use Render.com with the provided `render.yaml`:
+
+1. Create a new Render account or login at [render.com](https://render.com)
+2. Connect your Git repository
+3. Select "Blueprint" as deployment type to use the render.yaml configuration
+4. Configure any environment variables if needed
+5. Deploy
+
+### 3. PythonAnywhere Deployment
+
+To deploy on PythonAnywhere:
+
+1. Create a PythonAnywhere account
+2. Upload your code (via Git or file upload)
+3. Create a new web app using the Flask framework
+4. Set the WSGI configuration file to use `pythonanywhere_wsgi.py`
+5. Set up the virtual environment with your dependencies
+
+### 4. GitHub Pages Static Demo
+
+A static demo version can be deployed to GitHub Pages using the provided GitHub Action:
+
+1. Push your code to a GitHub repository
+2. Enable GitHub Actions in your repository settings
+3. The workflow at `.github/workflows/static-deploy.yml` will automatically build a static demo
+4. Access the demo at `https://[your-username].github.io/[repository-name]/`
+
+Note: The static demo has limited functionality as it doesn't include server-side processing.
+
 ## Notes
 
 This is a proof of concept application with simulated outputs. In a real-world implementation, the application would:

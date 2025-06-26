@@ -534,9 +534,22 @@ def handle_disconnect():
     logger.info(f"Client disconnected: {request.sid}")
 
 if __name__ == '__main__':
-    logger.info("Starting Rapid Reef Assessment Application")
-    logger.info(f"Upload folder: {app.config['UPLOAD_FOLDER']}")
-    logger.info("Application ready for marine ecosystem assessment")
+    # Create necessary directories if they don't exist
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    os.makedirs(app.config['REPORTS_FOLDER'], exist_ok=True)
     
-    # Use development server (in production, use proper WSGI server)
-    socketio.run(app, debug=True, host='0.0.0.0', port=5000)
+    logger.info('Starting Rapid Reef Assessment Application')
+    logger.info(f"Upload folder: {app.config['UPLOAD_FOLDER']}")
+    logger.info('Application ready for marine ecosystem assessment')
+    
+    # Get port from environment variable or use default
+    port = int(os.environ.get('PORT', 5000))
+    
+    # Determine if we're running in production
+    is_production = os.environ.get('FLASK_ENV') == 'production'
+    
+    # Run with appropriate host and debug settings
+    socketio.run(app, 
+                host='0.0.0.0',  # Bind to all network interfaces
+                port=port,
+                debug=not is_production)

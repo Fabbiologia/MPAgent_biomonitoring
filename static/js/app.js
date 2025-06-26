@@ -147,31 +147,29 @@ class ReefAssessmentApp {
             return;
         }
         
-        // Show video preview
-        this.showVideoPreview(file);
+        // Display video filename
+        const filenameElement = document.getElementById('video-filename');
+        if (filenameElement) {
+            filenameElement.textContent = file.name;
+        }
         
-        // Check for algal bloom special handling
+        // Check for algal bloom in filename
         if (file.name.toLowerCase().includes('algal_bloom')) {
-            document.getElementById('algal-bloom-alert').style.display = 'block';
-        } else {
-            document.getElementById('algal-bloom-alert').style.display = 'none';
+            const algalAlert = document.getElementById('algal-bloom-alert');
+            if (algalAlert) {
+                algalAlert.style.display = 'block';
+                console.log('Algal bloom detected in filename');
+            }
+        }
+        
+        // Show analysis info section (without video preview)
+        const analysisInfo = document.getElementById('analysis-info');
+        if (analysisInfo) {
+            analysisInfo.style.display = 'block';
         }
         
         // Upload file
         this.uploadVideo(file);
-    }
-    
-    showVideoPreview(file) {
-        const preview = document.getElementById('video-preview');
-        const thumbnail = document.getElementById('video-thumbnail');
-        const filename = document.getElementById('video-filename');
-        
-        // Create object URL for video preview
-        const videoURL = URL.createObjectURL(file);
-        thumbnail.src = videoURL;
-        filename.textContent = `File: ${file.name} (${this.formatFileSize(file.size)})`;
-        
-        preview.style.display = 'block';
     }
     
     formatFileSize(bytes) {

@@ -8,6 +8,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Leaflet.js CSS and JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -52,18 +55,12 @@
                             <p class="mt-2 mb-0" id="upload-status">Uploading...</p>
                         </div>
 
-                        <!-- Video Thumbnail -->
-                        <div id="video-preview" class="mt-3" style="display: none;">
-                            <h6>Video Preview:</h6>
-                            <video id="video-thumbnail" controls width="400" class="img-thumbnail">
-                                Your browser does not support the video tag.
-                            </video>
-                            <div class="mt-2">
-                                <p id="video-filename"></p>
-                                <div id="algal-bloom-alert" class="alert alert-warning" style="display: none;">
-                                    <i class="fas fa-exclamation-triangle"></i> 
-                                    <strong>Special Analysis Triggered:</strong> Algal bloom detection protocols activated for this video.
-                                </div>
+                        <!-- Algal Bloom Alert (No Video Preview) -->
+                        <div class="mt-3" style="display: none;" id="analysis-info">
+                            <p id="video-filename" class="mb-2"></p>
+                            <div id="algal-bloom-alert" class="alert alert-warning" style="display: none;">
+                                <i class="fas fa-exclamation-triangle"></i> 
+                                <strong>Special Analysis Triggered:</strong> Algal bloom detection protocols activated for this video.
                             </div>
                         </div>
                     </div>
@@ -162,31 +159,18 @@
                         </div>
                     </div>
                     
-                    <!-- Gulf of California Map -->
+                    <!-- Interactive Gulf of California Map -->
                     <div class="card mt-4">
                         <div class="card-header">
                             <h5><i class="fas fa-map-marked-alt"></i> Gulf of California</h5>
                         </div>
                         <div class="card-body">
                             <div class="gulf-map-container">
-                                <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" class="gulf-map" id="gulf-map">
-                                    <!-- Simple map of Gulf of California -->
-                                    <path d="M100,50 L50,350 L250,350 L200,50 Z" fill="#e3f2fd" stroke="#2196f3" stroke-width="2"/>
-                                    <!-- Land masses -->
-                                    <path d="M100,50 L50,350 L0,350 L0,50 Z" fill="#dcedc8" stroke="#8bc34a" stroke-width="1"/>
-                                    <path d="M200,50 L250,350 L300,350 L300,50 Z" fill="#dcedc8" stroke="#8bc34a" stroke-width="1"/>
-                                    <!-- Map labels -->
-                                    <text x="25" y="200" font-size="12px" fill="#37474f" transform="rotate(-90, 25, 200)">Baja California Peninsula</text>
-                                    <text x="275" y="200" font-size="12px" fill="#37474f" transform="rotate(90, 275, 200)">Mexican Mainland</text>
-                                    <text x="150" y="200" font-size="14px" fill="#0d47a1" text-anchor="middle">Gulf of California</text>
-                                    <!-- Location markers group -->
-                                    <g id="location-markers"></g>
-                                    <!-- Current location pin -->
-                                    <circle id="location-pin" cx="150" cy="200" r="8" fill="#ff5722" />
-                                </svg>
+                                <!-- Interactive Leaflet Map -->
+                                <div id="interactive-map" style="height: 400px; width: 100%;"></div>
                                 <div id="current-location" class="small mt-2 p-2 border rounded bg-light">
-                                    <span class="badge bg-secondary">No location selected</span>
-                                    <div class="small text-muted mt-1">Click on a map pin to select a location</div>
+                                    <span class="badge bg-primary">Current Assessment Location</span>
+                                    <div id="location-info" class="small mt-1">No location selected</div>
                                 </div>
                             </div>
                         </div>
