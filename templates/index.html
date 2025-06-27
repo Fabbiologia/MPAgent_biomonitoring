@@ -12,12 +12,26 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .powered-by-container {
+            text-align: center;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+        .powered-by-container img {
+            height: 40px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-dark bg-primary">
         <div class="container-fluid">
             <span class="navbar-brand mb-0 h1">
-                <i class="fas fa-water"></i> Rapid Reef Assessment from Diver Video
+                <img src="{{ url_for('static', filename='ChatGPT Image Jun 27, 2025, 12_05_47 AM.png') }}" alt="Rapid Reef Assessment Logo" height="40" class="d-inline-block align-text-top me-2">
+                Rapid Reef Assessment from Diver Video
             </span>
             <span class="navbar-text">Gulf of California Marine Assessment PoC</span>
         </div>
@@ -119,16 +133,16 @@
                             <h6>Quick Questions:</h6>
                             <div class="d-grid gap-2">
                                 <button class="btn btn-outline-info btn-sm quick-prompt" 
-                                        data-prompt="What is the relationship between fish density and surface temperature?">
-                                    🌡️ Fish Density & Temperature
+                                        data-prompt="What are the latest fish trends here?">
+                                    📈 Show Fish Trends
                                 </button>
                                 <button class="btn btn-outline-warning btn-sm quick-prompt" 
-                                        data-prompt="Is coral bleaching affecting fish health in this area?">
-                                    🪸 Coral Bleaching Impact
+                                        data-prompt="How does temperature correlate with fish biomass in this area?">
+                                    🌡️ Temp & Biomass Correlation
                                 </button>
                                 <button class="btn btn-outline-success btn-sm quick-prompt" 
-                                        data-prompt="Compare this site to Cabo Pulmo baseline data">
-                                    📊 Cabo Pulmo Comparison
+                                        data-prompt="Compare this site to the Cabo Pulmo baseline">
+                                    📊 Compare to Baseline
                                 </button>
                             </div>
                         </div>
@@ -138,10 +152,10 @@
                             <div id="chat-messages" class="chat-messages">
                                 <div class="bot-message">
                                     <i class="fas fa-robot"></i>
-                                    <div class="message-content">
+                                    <p class="card-text small" style="text-align: justify;">
                                         Welcome! I'm ReefBot, your marine ecology assistant. Upload a video to begin analysis, 
                                         or ask me questions about Gulf of California ecosystems.
-                                    </div>
+                                    </p>
                                     <div class="message-time">System</div>
                                 </div>
                             </div>
@@ -172,6 +186,17 @@
                                     <span class="badge bg-primary">Current Assessment Location</span>
                                     <div id="location-info" class="small mt-1">No location selected</div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Powered by Logo Section -->
+                    <div class="card mt-4">
+                        <div class="powered-by-container d-flex flex-column align-items-center">
+                            <span>Powered by:</span>
+                            <div class="d-flex flex-row align-items-center mt-2">
+                                <img src="{{ url_for('static', filename='logo.png') }}" alt="Company Logo" style="height:140px; margin-right: 16px;">
+                                <img src="/static/ChatMPA_logo_v3.jpg" alt="ChatMPA Logo" style="height:140px;">
                             </div>
                         </div>
                     </div>

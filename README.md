@@ -69,7 +69,7 @@ pip install -r requirements.txt
 3. Run the application:
 
 ```bash
-python app.py
+source env/bin/activate && python app.py
 ```
 
 4. Open a browser and navigate to:
