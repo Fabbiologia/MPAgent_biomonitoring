@@ -30,14 +30,18 @@
     <nav class="navbar navbar-dark bg-primary">
         <div class="container-fluid">
             <span class="navbar-brand mb-0 h1">
-                <img src="{{ url_for('static', filename='ChatGPT Image Jun 27, 2025, 12_05_47 AM.png') }}" alt="Rapid Reef Assessment Logo" height="40" class="d-inline-block align-text-top me-2">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Rapid Reef Assessment Logo" height="40" class="d-inline-block align-text-top me-2">
                 Rapid Reef Assessment from Diver Video
             </span>
             <span class="navbar-text">Gulf of California Marine Assessment PoC</span>
         </div>
     </nav>
 
-    <div class="container-fluid mt-4">
+        <div class="container-fluid mt-4">
+        <div class="text-right mb-3">
+            <a href="{{ url_for('citations') }}" class="btn btn-info">View Data Impact Report</a>
+            <a href="{{ url_for('about') }}" class="btn btn-success">About Methods</a>
+        </div>
         <div class="row">
             <!-- Main Content Area -->
             <div class="col-lg-8">

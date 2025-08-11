@@ -3,7 +3,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize app when DOM is ready
-    const app = new ReefAssessmentApp();
+    window.reefApp = new ReefAssessmentApp();
 });
 
 class ReefAssessmentApp {
@@ -107,10 +107,7 @@ class ReefAssessmentApp {
             });
         });
         
-        // PDF download button
-        document.getElementById('download-pdf').addEventListener('click', () => {
-            this.downloadReportPDF();
-        });
+        // PDF download handled by static/js/pdf-export.js
         
         // Upload history functionality
         document.getElementById('upload-history').addEventListener('click', (e) => {

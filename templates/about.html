@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Coastal Vulnerability Assessment Methods</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            background-color: #f4f7f6;
+        }
+        .method-header {
+            background-color: #004085;
+            color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: .3rem;
+        }
+        .method-card {
+            background-color: #ffffff;
+            border-left: 5px solid #17a2b8;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        .method-figure {
+            max-width: 100%;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .method-figure img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: .3rem;
+        }
+        .method-figure figcaption {
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+        .reference {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-left: 3px solid #6c757d;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="method-header text-center">
+            <h1>Coastal Vulnerability Assessment Methods</h1>
+            <p class="lead">Understanding the Vision Method and Index Method for evaluating coastal vulnerability at multiple spatial scales</p>
+            <p>Based on research from: <strong>A novel index based on visual assessment to evaluate coastal vulnerability at multiple spatial scales</strong></p>
+            <p><em>Ecological Indicators, 2024 (Vol. 152)</em></p>
+        </div>
+
+        <div class="row">
+            <!-- Method Overview -->
+            <div class="col-md-12 mb-4">
+                <div class="method-card">
+                    <h2>Research Overview</h2>
+                    <p>This research introduces innovative methods for assessing coastal vulnerability that can be applied across different spatial scales. The approach combines visual assessment techniques with quantitative indexing to provide comprehensive evaluations of coastal systems under climate change and human impact scenarios.</p>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> These methods were developed to address the need for flexible, scalable assessment tools that can be implemented in diverse coastal environments worldwide.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vision Method -->
+            <div class="col-md-6">
+                <div class="method-card">
+                    <h2><i class="fas fa-eye"></i> Vision Method</h2>
+                    <p>The Vision Method represents a novel approach to coastal vulnerability assessment that relies on visual interpretation of coastal features, supported by standardized protocols for field observations.</p>
+                    
+                    <h4>Key Components:</h4>
+                    <ul>
+                        <li><strong>Visual Indicators</strong> - Observable physical characteristics of coastal systems that indicate vulnerability</li>
+                        <li><strong>Multi-scale Observation</strong> - Techniques for assessing coastal features at different spatial resolutions</li>
+                        <li><strong>Field Assessment Protocols</strong> - Standardized procedures for collecting visual data</li>
+                        <li><strong>Photographic Documentation</strong> - Systems for capturing, organizing, and analyzing visual evidence</li>
+                    </ul>
+
+                    <h4>Advantages:</h4>
+                    <ul>
+                        <li>Rapid implementation without extensive instrumentation</li>
+                        <li>Accessible to diverse stakeholders with minimal training</li>
+                        <li>Adaptable across geographic regions</li>
+                        <li>Bridges gap between expert assessment and community participation</li>
+                    </ul>
+
+                    <div class="method-figure">
+                        <figure>
+                            <img src="{{ url_for('static', filename='vision_method_diagram.png') }}" alt="Vision Method Diagram" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x300?text=Vision+Method+Diagram'">
+                            <figcaption>Figure 1: Conceptual framework for the Vision Method showing the relationship between visual indicators and vulnerability assessment</figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Index Method -->
+            <div class="col-md-6">
+                <div class="method-card">
+                    <h2><i class="fas fa-chart-bar"></i> Index Method</h2>
+                    <p>The Index Method provides a quantitative framework for combining multiple vulnerability indicators into a comprehensive assessment tool that can be applied at multiple spatial scales.</p>
+                    
+                    <h4>Key Components:</h4>
+                    <ul>
+                        <li><strong>Multi-parameter Integration</strong> - Mathematical framework for combining distinct vulnerability parameters</li>
+                        <li><strong>Spatial Scale Adaptation</strong> - Mechanisms for adjusting index calculations based on assessment scale</li>
+                        <li><strong>Weighting Systems</strong> - Methods for prioritizing factors based on regional significance</li>
+                        <li><strong>Threshold Determination</strong> - Establishing critical values for vulnerability classification</li>
+                    </ul>
+
+                    <h4>Index Formula:</h4>
+                    <div class="p-3 bg-light border rounded">
+                        <p>CVI = √[(P₁ × W₁) × (P₂ × W₂) × ... × (Pₙ × Wₙ) / n]</p>
+                        <p><small>Where P represents parameters, W represents weights, and n is the number of parameters</small></p>
+                    </div>
+
+                    <h4>Vulnerability Classification:</h4>
+                    <table class="table table-sm table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>CVI Range</th>
+                                <th>Vulnerability Level</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0.0 - 1.0</td>
+                                <td>Very Low</td>
+                            </tr>
+                            <tr>
+                                <td>1.1 - 2.0</td>
+                                <td>Low</td>
+                            </tr>
+                            <tr>
+                                <td>2.1 - 3.0</td>
+                                <td>Moderate</td>
+                            </tr>
+                            <tr>
+                                <td>3.1 - 4.0</td>
+                                <td>High</td>
+                            </tr>
+                            <tr>
+                                <td>4.1 - 5.0</td>
+                                <td>Very High</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="method-figure">
+                        <figure>
+                            <img src="{{ url_for('static', filename='index_method_diagram.png') }}" alt="Index Method Diagram" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x300?text=Index+Method+Diagram'">
+                            <figcaption>Figure 2: Schematic representation of the Index Method showing parameter integration across spatial scales</figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Integration of Methods -->
+            <div class="col-md-12">
+                <div class="method-card">
+                    <h2><i class="fas fa-link"></i> Integration of Methods</h2>
+                    <p>The power of this research lies in the complementary nature of the Vision and Index Methods. When combined, they provide a robust framework for comprehensive coastal vulnerability assessment:</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Method Synergy:</h4>
+                            <ul>
+                                <li>Visual assessments inform parameter selection for index development</li>
+                                <li>Index results guide targeted visual monitoring of high-risk areas</li>
+                                <li>Combined approach enables validation across methodologies</li>
+                                <li>Facilitates both expert and community-based assessment</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Application Benefits:</h4>
+                            <ul>
+                                <li>Scalable from individual beaches to regional coastlines</li>
+                                <li>Adaptable to different ecological and geomorphological contexts</li>
+                                <li>Supports both rapid assessment and longitudinal monitoring</li>
+                                <li>Provides actionable data for coastal management and policy</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- References -->
+            <div class="col-md-12 mt-4">
+                <h3>References</h3>
+                <div class="reference">
+                    <p>Primary Source: A novel index based on visual assessment to evaluate coastal vulnerability at multiple spatial scales. <em>Ecological Indicators</em>, Volume 152, 2024. <a href="https://www.sciencedirect.com/science/article/pii/S1470160X24009725">https://www.sciencedirect.com/science/article/pii/S1470160X24009725</a></p>
+                </div>
+                <div class="reference">
+                    <p>Additional Resources:</p>
+                    <ul>
+                        <li>Indices of Coastal Vulnerability to Climate Change: a Review. <em>Environmental Processes</em>, 2022.</li>
+                        <li>A Multi-scale coastal vulnerability index: A tool for coastal managers? <em>Ocean & Coastal Management</em>, 2013.</li>
+                        <li>Integrated socio-environmental vulnerability assessment of coastal hazards. <em>Scientific Reports</em>, 2022.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5 mb-5">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Main Application</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

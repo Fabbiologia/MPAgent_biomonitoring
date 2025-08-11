@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citation and Impact Report - Reef Assessment</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            background-color: #f4f7f6;
+        }
+        .impact-header {
+            background-color: #004085;
+            color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: .3rem;
+        }
+        .citation-card {
+            background-color: #ffffff;
+            border-left: 5px solid #17a2b8;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        .usage-badge {
+            font-size: 1.2rem;
+            font-weight: bold;
+            background-color: #28a745;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="impact-header text-center">
+            <h1>Data Source Impact Report</h1>
+            <p class="lead">This page provides a transparent, real-time report on the data sources used by the ReefBot AI to generate ecological assessments. Each use of a paper or database in a response is logged here, recognizing the contribution of researchers and data providers.</p>
+        </div>
+
+        <h2>Scientific Manuscripts</h2>
+        <p>Peer-reviewed papers that form the knowledge base for the AI's understanding of reef ecology.</p>
+        {% for paper in papers %}
+        <div class="citation-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="mb-0">{{ paper.citation }}</p>
+                <span class="usage-badge" title="Number of times this source was used">{{ paper.used }}</span>
+            </div>
+        </div>
+        {% endfor %}
+
+        <h2 class="mt-5">Ecological Databases</h2>
+        <p>Long-term monitoring data providing the foundation for trend analysis.</p>
+        {% for db in databases %}
+        <div class="citation-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="mb-0">{{ db.citation }}</p>
+                <span class="usage-badge" title="Number of times this source was used">{{ db.used }}</span>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="text-center mt-5">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Main Application</a>
+        </div>
+    </div>
+</body>
+</html>

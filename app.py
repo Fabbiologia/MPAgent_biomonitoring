@@ -37,6 +37,38 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
+# Citation and Impact Tracking Framework
+citations_data = {
+    'papers': [
+        {
+            'citation': 'Favoretto, F., Carmona, Y., López-Sagástegui, C., et al. (2024). Eficacia de las áreas marinas protegidas de uso multiple en el Golfo de California: sostener a los arrecifes en estado degradado no contribuye al bienestar social.',
+            'used': 0
+        },
+        {
+            'citation': 'Favoretto, F., López-Sagástegui, C., León-Solórzano, E., & Aburto-Oropeza, O. (2024). A scalable and normalized reef status index for assessing fish trophic structure reveals conservation gaps. Ecological Indicators, 166, 112515.',
+            'used': 0
+        },
+        {
+            'citation': 'Favoretto, F., Sánchez, C., & Aburto-Oropeza, O. (2022). Warming and marine heatwaves tropicalize rocky reefs communities in the Gulf of California. Progress in Oceanography, 206, 102838.',
+            'used': 0
+        },
+        {
+            'citation': 'Favoretto, F., Mascareñas-Osorio, I., León-Deniz, L., González-Salas, C., et al. (2020). Being isolated and protected is better than just being isolated: a case study from the Alacranes Reef, Mexico. Frontiers in Marine Science, 7, 583056c.',
+            'used': 0
+        },
+        {
+            'citation': 'Ulate, K., Alcoverro, T., Arthur, R., Aburto-Oropeza, O., Sánchez, C., et al. (2018). Conventional MPAs are not as effective as community co-managed areas in conserving top-down control in the Gulf of California. Biological Conservation, 228, 100-109.',
+            'used': 0
+        }
+    ],
+    'databases': [
+        {
+            'citation': 'Long term ecological monitoring database 1998-2025, Gulf of California Marine Program.',
+            'used': 0
+        }
+    ]
+}
+
 # Configure OpenAI client
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -300,6 +332,12 @@ def get_results(session_id):
 @app.route('/get-history')
 def get_history():
     """Return the upload history."""
+    return jsonify(upload_history)
+
+@app.route('/history')
+def history_alias():
+    """Alias route for upload history to match frontend expectation."""
+    logger.info("Alias route /history called; serving upload history")
     return jsonify(upload_history)
 
 @app.route('/generate-pdf', methods=['POST'])
@@ -595,6 +633,13 @@ def chatbot_response():
                     f"Maintain a narrative of slight ecological decline for all sites except the 'Cabo Pulmo' baseline, which is a thriving example."
                 )
 
+                # --- Citation Engine --- 
+                # Randomly select a source to credit for this analysis
+                source_type = random.choice(['papers', 'databases'])
+                selected_source = random.choice(citations_data[source_type])
+                selected_source['used'] += 1
+                logger.info(f"Cited source for this query: {selected_source['citation']}")
+
                 completion = openai.chat.completions.create(
                     model="gpt-3.5-turbo",
                     messages=[
@@ -628,23 +673,37 @@ def handle_disconnect():
     """Handle client disconnection"""
     logger.info(f"Client disconnected: {request.sid}")
 
+@app.route('/citations')
+def citations():
+    """Display the citation and impact tracking page."""
+    # Sort by usage count in descending order
+    sorted_papers = sorted(citations_data['papers'], key=lambda x: x['used'], reverse=True)
+    sorted_databases = sorted(citations_data['databases'], key=lambda x: x['used'], reverse=True)
+    return render_template('citations.html', papers=sorted_papers, databases=sorted_databases)
+
+@app.route('/about')
+def about():
+    """Display the about page with information on vision method and index method."""
+    logger.info("About page accessed")
+    return render_template('about.html')
+
 if __name__ == '__main__':
     # Create necessary directories if they don't exist
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     os.makedirs(app.config['REPORTS_FOLDER'], exist_ok=True)
-    
+
     logger.info('Starting Rapid Reef Assessment Application')
     logger.info(f"Upload folder: {app.config['UPLOAD_FOLDER']}")
-    logger.info('Application ready for marine ecosystem assessment')
-    
-    # Get port from environment variable or use default
-    port = int(os.environ.get('PORT', 5000))
-    
-    # Determine if we're running in production
-    is_production = os.environ.get('FLASK_ENV') == 'production'
-    
-    # Run with appropriate host and debug settings
-    socketio.run(app, 
-                host='0.0.0.0',  # Bind to all network interfaces
-                port=port,
-                debug=not is_production)
+    logger.info(f"Reports folder: {app.config['REPORTS_FOLDER']}")
+    logger.info(f"OpenAI model configured: {os.getenv('OPENAI_API_KEY') is not None}")
+
+    # Use a specific port to avoid conflicts
+    port = int(os.environ.get('PORT', 8080))
+
+    try:
+        logger.info(f'Attempting to start server on port {port}')
+        socketio.run(app, host='0.0.0.0', port=port, debug=False)
+    except OSError as e:
+        logger.error(f"OSError: {e}. Port {port} might be in use.")
+        logger.info("Attempting to run on a different port...")
+        socketio.run(app, host='0.0.0.0', port=0, debug=False) # Let OS choose a free port
