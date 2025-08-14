@@ -100,8 +100,16 @@ app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 500MB max upload size
 
 # Configure SocketIO with simplified settings focused on stability
 # Lowering ping_interval and using threading for background tasks
-socketio = SocketIO(app, async_mode='eventlet', ping_timeout=5, ping_interval=3, 
-                   cors_allowed_origins='*', logger=False, engineio_logger=False)
+socketio = SocketIO(
+    app,
+    async_mode='eventlet',
+    # Increase timeouts to reduce disconnects on slow networks or brief server stalls
+    ping_timeout=25,      # seconds to wait for a pong before closing connection
+    ping_interval=10,     # seconds between pings
+    cors_allowed_origins='*',
+    logger=False,
+    engineio_logger=False
+)
 
 # Create necessary directories if they don't exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
