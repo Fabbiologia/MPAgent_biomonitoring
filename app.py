@@ -695,6 +695,11 @@ def about():
     logger.info("About page accessed")
     return render_template('about.html')
 
+@app.route('/healthz')
+def healthz():
+    """Lightweight health check endpoint for platform monitors."""
+    return "ok", 200
+
 if __name__ == '__main__':
     # Create necessary directories if they don't exist
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
