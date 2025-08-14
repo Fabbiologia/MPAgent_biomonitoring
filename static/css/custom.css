@@ -1,0 +1,77 @@
+/*
+ custom.css — project-specific look & feel overrides
+ - Safe to edit for branding without touching base styles
+ - Loaded after Bootstrap and style.css
+ - Follow colorblind-friendly choices where possible
+*/
+
+:root {
+  /* Brand palette (edit these for quick theme changes) */
+  --brand-primary: #1565c0;   /* blue, good contrast */
+  --brand-secondary: #2e7d32; /* green */
+  --brand-accent: #ffb300;    /* amber */
+  --brand-dark: #0d1b2a;
+  --brand-light: #f6f8fa;
+
+  /* Text colors */
+  --text-primary: #0b0f14;
+  --text-muted: #6c757d;
+}
+
+/* Navbar */
+.navbar.navbar-expand {
+  border-bottom: 1px solid #e9ecef;
+}
+.navbar .navbar-brand strong { color: var(--brand-dark); }
+
+/* Primary buttons */
+.btn-primary,
+.btn.btn-primary {
+  background-color: var(--brand-primary) !important;
+  border-color: var(--brand-primary) !important;
+}
+.btn-primary:hover,
+.btn.btn-primary:hover {
+  filter: brightness(0.92);
+}
+
+/* Info/Success accents */
+.btn-info { background-color: #2aa198 !important; border-color: #2aa198 !important; }
+.btn-success { background-color: var(--brand-secondary) !important; border-color: var(--brand-secondary) !important; }
+
+/* Links */
+.a, a { color: var(--brand-primary); }
+.a:hover, a:hover { color: #0f4fa0; }
+
+/* Cards */
+.card-header h4, .card-header h5 { margin: 0; }
+.card-muted { background: var(--brand-light); border: 1px dashed #d0d7de; }
+
+/* Upload zone */
+.upload-zone { border: 2px dashed #cfd8dc; background-color: #fbfdff; }
+.upload-zone .fa-cloud-upload-alt { color: var(--brand-primary); }
+.tile { text-align: center; padding: 10px; border: 1px solid #edf2f7; border-radius: 10px; background: white; }
+.tile i { font-size: 22px; color: var(--brand-secondary); }
+
+/* Chat panel */
+.chatbot-panel .card-header { background: #f8fafc; }
+.chat-messages .bot-message i { color: var(--brand-primary); }
+
+/* Map container */
+.gulf-map-container { border: 1px solid #eef2f7; border-radius: 8px; overflow: hidden; }
+
+/* Footer */
+.footer { background: #ffffff; border-top: 1px solid #e9ecef; }
+
+/* Typography */
+body { color: var(--text-primary); }
+.text-muted { color: var(--text-muted) !important; }
+
+/* Utility */
+.rounded { border-radius: 8px !important; }
+.shadow-sm { box-shadow: 0 1px 2px rgba(16,24,40,0.06), 0 1px 3px rgba(16,24,40,0.1) !important; }
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+  .hero h2 { font-size: 1.25rem; }
+}
