@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
@@ -17,8 +17,8 @@ COPY . .
 # Create necessary directories
 RUN mkdir -p uploads static/reports static/plots
 
-# Expose the port the app runs on
-EXPOSE 5000
+# Expose the port the app runs on (matches default in app.py)
+EXPOSE 8080
 
 # Command to run the application
 CMD ["python", "app.py"]
